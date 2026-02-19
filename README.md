@@ -15,4 +15,5 @@ Retrieve Hotel--- Reads or fetches hotels by their uniqueID.
 Update Hotel modify existing hotel records
 Delete Hotel it makes use of soft delete where the record is not really deleted but just marked. This is really necesary for accountability sake. 
 
+Repository pattern is also used in this project.
 
