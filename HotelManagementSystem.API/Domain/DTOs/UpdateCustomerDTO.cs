@@ -1,6 +1,6 @@
 ﻿namespace HotelManagementSystem.API.Domain.DTOs
 {
-    public class UpdateHotelDTO
+    public class UpdateCustomerDTO
     {
         public string Name { get; set; }
         public string City { get; set; }

@@ -1,10 +1,10 @@
 ﻿namespace HotelManagementSystem.API.Utility
 {
-    public class ResponseDetails
+    public class ResponseDetails<T>
     {
-        public int StatusCode { get; set; }
+        public bool IsSuccess {  get; set; }
         public string Message { get; set; }
-        public string? Details { get; set; }
+        public T? Data { get; set; }
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
     }
 }

@@ -1,4 +1,5 @@
 using HotelManagementSystem.API.Context;
+using HotelManagementSystem.API.Extensions;
 using HotelManagementSystem.API.Middleware;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<HotelContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("HotelConnection")));
+
+
+builder.Services.AddExtension(builder.Configuration); //Inject  custom extension
 
 var app = builder.Build();
 
