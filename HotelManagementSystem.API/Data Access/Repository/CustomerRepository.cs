@@ -2,7 +2,6 @@
 using HotelManagementSystem.API.Data_Access.Interfaces;
 using HotelManagementSystem.API.Domain.DTOs;
 using HotelManagementSystem.API.Domain.Models;
-using HotelManagementSystem.API.Repository;
 using HotelManagementSystem.API.Utility;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +18,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             _context = context;
         }
         
-        public async Task<ResponseDetails<CustomerResponseDTO>> CreateCustomer(CreateCustomerDTO customerDetails)
+        public async Task<ResponseDetails<CustomerResponseDTO>> CreateCustomerAsync(CreateCustomerDTO customerDetails)
         {
             try
             {
@@ -86,7 +85,8 @@ namespace HotelManagementSystem.API.Data_Access.Repository
                     return new ResponseDetails<CustomerResponseDTO>
                     {
                         IsSuccess = false,
-                        Message="Customer not found"
+                        Message="Customer not found",
+                        Data = null
                     };
                 }
                 _context.Remove(customer);
@@ -109,14 +109,71 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             }
         }
 
-        public Task<ResponseDetails<CustomerResponseDTO>> GetCustomerById(Guid id)
+        public async Task<ResponseDetails<CustomerResponseDTO>> GetCustomerByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var customer = await _context.Customers.FindAsync(id);
+                if (customer == null)
+                {
+                    return new ResponseDetails<CustomerResponseDTO>
+                    {
+                        IsSuccess = false,
+                        Data = null,
+                        Message = "Customer not found"
+                    };
+                }
+                return new ResponseDetails<CustomerResponseDTO>
+                {
+                    IsSuccess = true,
+                    Message = "Customer fetched Successfully"
+                };
+            }
+            catch (Exception ex) 
+            {
+                _logger.LogError(ex, "Error occurred while finding customer with id: {id}", id);
+
+                return new ResponseDetails<CustomerResponseDTO>
+                {
+                    IsSuccess = false,
+                    Message = "An error occurred while finding the customer"
+                };
+            }
         }
 
-        public Task<ResponseDetails<CustomerResponseDTO>> UpdateCustomer(Guid id, UpdateCustomerDTO updateCustomer)
+        public async Task<ResponseDetails<CustomerResponseDTO>> UpdateCustomerAsync(Guid id, UpdateCustomerDTO updateCustomer)
         {
-            throw new NotImplementedException();
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
+            {
+                return new ResponseDetails<CustomerResponseDTO>
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = "Customer not found"
+                };
+            }
+            var customerDTO = new UpdateCustomerDTO
+            {
+                Name = updateCustomer.Name,
+                City = updateCustomer.City,
+                Country = updateCustomer.Country,
+                Address = updateCustomer.Address,
+            };
+            _context.Update<UpdateCustomerDTO>(updateCustomer);
+            await _context.SaveChangesAsync();
+
+            //await _context.AddAsync(customer);
+            customer.Name = (updateCustomer.Name != null)
+                ? updateCustomer.Name 
+                : customer.Name;
+
+            customer.Address = (updateCustomer.Address != null)
+                ? updateCustomer.Address
+                : customer.Address;
+
+            await _context.SaveChangesAsync();
+
         }
     }
 }

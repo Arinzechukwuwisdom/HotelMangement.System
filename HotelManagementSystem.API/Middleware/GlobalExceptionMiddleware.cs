@@ -1,4 +1,5 @@
-﻿using HotelManagementSystem.API.Utility;
+﻿using HotelManagementSystem.API.Domain.DTOs;
+using HotelManagementSystem.API.Utility;
 using System.Text.Json;
 
 namespace HotelManagementSystem.API.Middleware
@@ -29,11 +30,13 @@ namespace HotelManagementSystem.API.Middleware
 
                 _logger.LogError(ex, "An unhandled exception occurred.");
 
-                var error = new ResponseDetails
+                var error = new ResponseDetails<object>
                 {
-                    StatusCode = 500,
+                    IsSuccess = true,
                     Message = "Internal Server Error",
-                    Details = ex.Message // careful in production
+                    //Details = ex.Message, // careful in production
+                    Data=null,
+                    Timestamp= DateTime.Now
                 };
 
                 var result = JsonSerializer.Serialize(error);

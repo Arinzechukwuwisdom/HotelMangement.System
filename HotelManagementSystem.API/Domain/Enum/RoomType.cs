@@ -1,6 +1,4 @@
-﻿using HotelManagementSystem.API.Entities;
-
-namespace HotelManagementSystem.API.Domain.Enum
+﻿namespace HotelManagementSystem.API.Domain.Enum
 {
     public enum RoomType
     {
