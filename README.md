@@ -19,6 +19,6 @@ Extension method is also used in this project where different services was regis
 
 Validators
 
-global exception midlleware
-Logger where ILogger<T> was used.
-ResponseDetails
+global exception middleware which catches errors not spacified in the responseDetails globally with the use of the function RequestDelegate which passes the httpRequest next to other middleware on the pipeline. This global exception is automatomatically run by the Asp.net core immedaitely there's an http request .
+Logger where ILogger<T> catches the error from the middleware or anywhere else and logs it out. Logger is used in production to log errors which could not be caught or seen during debugging.
+ResponseDetails is a structured API response.It guarantees same response for every APi call.
