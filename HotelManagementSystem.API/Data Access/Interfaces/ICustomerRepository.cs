@@ -9,5 +9,5 @@ namespace HotelManagementSystem.API.Data_Access.Interfaces
         Task<ResponseDetails<CustomerResponseDTO>> UpdateCustomerAsync(Guid id, UpdateCustomerDTO updateCustomer);
         Task<ResponseDetails<CustomerResponseDTO>> GetCustomerByIdAsync(Guid id);
         Task<ResponseDetails<CustomerResponseDTO>> DeleteCustomer(Guid id);
-    }
+    }   
 }

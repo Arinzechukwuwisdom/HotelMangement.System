@@ -1,4 +1,4 @@
-﻿namespace HotelManagementSystem.API.Data_Access.Interfaces
+﻿    namespace HotelManagementSystem.API.Data_Access.Interfaces
 {
     public interface IBooking
     {

@@ -37,11 +37,14 @@ namespace HotelManagementSystem.API.Data_Access.Repository
 
                 var customer = new Customer
                 {
-                    Address = customerDetails.Address,
-                    Name = customerDetails.Name,
+                    //Address = customerDetails.Address,
+                    FullName = customerDetails.FirstName + " " + customerDetails.LastName,
                     EmailAddress = customerDetails.EmailAddress,
+                    City = customerDetails.City,
+                    Country = customerDetails.Country,
+                    //Address= customerDetails.Address,
                     PhoneNumber = customerDetails.PhoneNumber,
-                    Password = BCrypt.Net.BCrypt.HashPassword(customerDetails.Password)
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(customerDetails.Password)
                 };
 
                 await _context.Customers.AddAsync(customer);
@@ -52,7 +55,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
                 {
                     Id = customer.Id,
                     Address=customer.Address,
-                    Name = customer.Name,
+                    FullName = customer.FullName,
                 };
 
                 return new ResponseDetails<CustomerResponseDTO>
@@ -141,38 +144,63 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             }
         }
 
-        public async Task<ResponseDetails<CustomerResponseDTO>> UpdateCustomerAsync(Guid id, UpdateCustomerDTO updateCustomer)
+        public async Task<ResponseDetails<CustomerResponseDTO>> UpdateCustomerAsync(Guid id, UpdateCustomerDTO customerDetails)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
+            try
             {
+                var customer = await _context.Customers.FindAsync(id);
+                if (customer == null)
+                {
+                    return new ResponseDetails<CustomerResponseDTO>
+                    {
+                        IsSuccess = false,
+                        Data = null,
+                        Message = "Customer not found"
+                    };
+                }
+               
+                //await _context.AddAsync(customer);
+                customer.FullName = customerDetails.Name ?? customer.FullName;
+
+                customer.Country = customerDetails.Country ?? customer.Country;
+
+                customer.City = customerDetails.City ?? customer.City;
+
+                customer.EmailAddress = customerDetails.Email ?? customer.EmailAddress;
+
+                if (!string.IsNullOrEmpty(customerDetails.Password))
+                {
+                    customer.PasswordHash = customerDetails.Password;
+                }
+
+                customer.PhoneNumber = customerDetails.PhoneNumber ?? customer.PhoneNumber;
+
+                await _context.SaveChangesAsync();
+                var customerResponseDTO = new CustomerResponseDTO
+                {
+                    FullName = customer.FullName,
+                    City = customer.City,
+                    Country = customer.Country,
+                    Address = customer.Address,
+                };
+
+                return new ResponseDetails<CustomerResponseDTO>
+                {
+                    IsSuccess = true,
+                    Data = customerResponseDTO,
+                    Message = "Customer Updated Successfully"
+                };
+            }
+            catch (Exception ex) 
+            {
+                _logger.LogError(ex, "Error occurred while updating customer with id: {id}", id);
+
                 return new ResponseDetails<CustomerResponseDTO>
                 {
                     IsSuccess = false,
-                    Data = null,
-                    Message = "Customer not found"
+                    Message = "An error occurred while updating customer"
                 };
             }
-            var customerDTO = new UpdateCustomerDTO
-            {
-                Name = updateCustomer.Name,
-                City = updateCustomer.City,
-                Country = updateCustomer.Country,
-                Address = updateCustomer.Address,
-            };
-            _context.Update<UpdateCustomerDTO>(updateCustomer);
-            await _context.SaveChangesAsync();
-
-            //await _context.AddAsync(customer);
-            customer.Name = (updateCustomer.Name != null)
-                ? updateCustomer.Name 
-                : customer.Name;
-
-            customer.Address = (updateCustomer.Address != null)
-                ? updateCustomer.Address
-                : customer.Address;
-
-            await _context.SaveChangesAsync();
 
         }
     }

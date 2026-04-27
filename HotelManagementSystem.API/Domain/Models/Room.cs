@@ -1,6 +1,4 @@
 ﻿using HotelManagementSystem.API.Domain.Enum;
-using HotelManagementSystem.API.Entities;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelManagementSystem.API.Domain.Models

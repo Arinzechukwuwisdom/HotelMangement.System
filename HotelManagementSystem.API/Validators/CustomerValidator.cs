@@ -15,10 +15,10 @@ namespace HotelManagementSystem.API.Validators
                 .NotEmpty().WithMessage("Password is required.")
                 .MinimumLength(11).WithMessage("A valid PhoneNumber is required.");
 
-            RuleFor(dto => dto.Address)
-                .NotEmpty().WithMessage("A valid Address is required.");
+            RuleFor(dto => dto.Country)
+                .NotEmpty().WithMessage("A valid City is required.");
 
-            RuleFor(dto => dto.Name)
+            RuleFor(dto => dto.City)
                 .NotEmpty().WithMessage("Name is required.")
                 .MaximumLength(80).WithMessage("Name cannot Exceed 80 characters.");
 

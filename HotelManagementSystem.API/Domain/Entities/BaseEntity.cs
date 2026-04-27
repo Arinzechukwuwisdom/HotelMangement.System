@@ -8,6 +8,6 @@ namespace HotelManagementSystem.API.Domain.Entities
         [Key]
         public Guid Id { get; set; }
         [Column(TypeName = "Nvarchar(30)")]
-        public required string Name { get; set; }
+        public required string FullName { get; set; }
     }
 }

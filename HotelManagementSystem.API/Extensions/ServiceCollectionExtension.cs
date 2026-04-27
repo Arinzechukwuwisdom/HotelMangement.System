@@ -11,9 +11,9 @@ namespace HotelManagementSystem.API.Extensions
         {
             var connectionString = configuration.GetConnectionString("HotelConnection");
 
-            services.AddDbContext<HotelContext>(options => options.UseSqlServer("HotelConnection"));
+            services.AddDbContext<HotelContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddScoped<ICustomerRepository, CustomerRepository>(); // Dependency Injection for Patients
+            services.AddScoped<ICustomerRepository, CustomerRepository>(); // Dependency Injection for Customers.
 
         }
 
