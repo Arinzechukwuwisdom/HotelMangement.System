@@ -11,10 +11,10 @@ namespace HotelManagementSystem.API.Domain.Models
         public required decimal Price { get; set; }
         public required RoomStatus RoomStatus { get; set; }
         //public Guid RoomTypeId { get; set; }
-        public RoomType RoomType { get; set; }
+        public string RoomType { get; set; }
         public bool IsAvailable => RoomStatus == RoomStatus.Available;
-        public Guid HotelId { get; set; }
-        public Hotel Hotel { get; set; }
+        //public Guid HotelId { get; set; }
+        //public Hotel Hotel { get; set; }
         public List<Booking> Bookings { get; set; } = new List<Booking>();
     }
 }

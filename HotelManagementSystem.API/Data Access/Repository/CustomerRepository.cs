@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotelManagementSystem.API.Data_Access.Repository
 {
-    public class CustomerRepository : ICustomerRepository
+    public class CustomerRepository : ICustomer
     {
 
         public readonly HotelContext _context;
@@ -18,7 +18,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             _context = context;
         }
         
-        public async Task<ResponseDetails<CustomerResponseDTO>> CreateCustomerAsync(CreateCustomerDTO customerDetails)
+        public async Task<ResponseDetails<CustomerResponseDto>> CreateCustomerAsync(CreateCustomerDto customerDetails)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
 
                 if (customerExists)
                 {
-                    return new ResponseDetails<CustomerResponseDTO>
+                    return new ResponseDetails<CustomerResponseDto>
                     {
                         IsSuccess = false,
                         Message = "Customer with this email already exists",
@@ -37,12 +37,10 @@ namespace HotelManagementSystem.API.Data_Access.Repository
 
                 var customer = new Customer
                 {
-                    //Address = customerDetails.Address,
                     FullName = customerDetails.FirstName + " " + customerDetails.LastName,
                     EmailAddress = customerDetails.EmailAddress,
                     City = customerDetails.City,
                     Country = customerDetails.Country,
-                    //Address= customerDetails.Address,
                     PhoneNumber = customerDetails.PhoneNumber,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(customerDetails.Password)
                 };
@@ -51,14 +49,14 @@ namespace HotelManagementSystem.API.Data_Access.Repository
                 await _context.SaveChangesAsync();
 
                 // 5. Map to response DTO
-                var response = new CustomerResponseDTO
+                var response = new CustomerResponseDto
                 {
                     Id = customer.Id,
                     Address=customer.Address,
                     FullName = customer.FullName,
                 };
 
-                return new ResponseDetails<CustomerResponseDTO>
+                return new ResponseDetails<CustomerResponseDto>
                 {
                     IsSuccess = true,
                     Message = "Customer created successfully",
@@ -69,7 +67,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             {
                 _logger.LogError(ex, "Error occurred while creating customer with email: {Email}", customerDetails.EmailAddress);
 
-                return new ResponseDetails<CustomerResponseDTO>
+                return new ResponseDetails<CustomerResponseDto>
                 {
                     IsSuccess = false,
                     Message = $"An error occurred: {ex.Message}",
@@ -78,14 +76,14 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             }
         }
 
-        public async Task<ResponseDetails<CustomerResponseDTO>> DeleteCustomer(Guid id)
+        public async Task<ResponseDetails<CustomerResponseDto>> DeleteCustomer(Guid id)
         {
            try
             {
                 var customer = await _context.Customers.FindAsync(id);
                 if (customer == null)
                 {
-                    return new ResponseDetails<CustomerResponseDTO>
+                    return new ResponseDetails<CustomerResponseDto>
                     {
                         IsSuccess = false,
                         Message="Customer not found",
@@ -94,7 +92,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
                 }
                 _context.Remove(customer);
                 await _context.SaveChangesAsync();
-                return new ResponseDetails<CustomerResponseDTO>
+                return new ResponseDetails<CustomerResponseDto>
                 {
                     IsSuccess = true,
                     Message = "Customer Deleted Successfully"
@@ -104,7 +102,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             {
                 _logger.LogError(ex, "Error occurred while deleting customer with id: {id}",id);
 
-                return new ResponseDetails<CustomerResponseDTO>
+                return new ResponseDetails<CustomerResponseDto>
                 {
                     IsSuccess = false,
                     Message = "An error occurred while deleting the customer"
@@ -112,21 +110,21 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             }
         }
 
-        public async Task<ResponseDetails<CustomerResponseDTO>> GetCustomerByIdAsync(Guid id)
+        public async Task<ResponseDetails<CustomerResponseDto>> GetCustomerByIdAsync(Guid id)
         {
             try
             {
                 var customer = await _context.Customers.FindAsync(id);
                 if (customer == null)
                 {
-                    return new ResponseDetails<CustomerResponseDTO>
+                    return new ResponseDetails<CustomerResponseDto>
                     {
                         IsSuccess = false,
                         Data = null,
                         Message = "Customer not found"
                     };
                 }
-                return new ResponseDetails<CustomerResponseDTO>
+                return new ResponseDetails<CustomerResponseDto>
                 {
                     IsSuccess = true,
                     Message = "Customer fetched Successfully"
@@ -136,7 +134,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             {
                 _logger.LogError(ex, "Error occurred while finding customer with id: {id}", id);
 
-                return new ResponseDetails<CustomerResponseDTO>
+                return new ResponseDetails<CustomerResponseDto>
                 {
                     IsSuccess = false,
                     Message = "An error occurred while finding the customer"
@@ -144,14 +142,14 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             }
         }
 
-        public async Task<ResponseDetails<CustomerResponseDTO>> UpdateCustomerAsync(Guid id, UpdateCustomerDTO customerDetails)
+        public async Task<ResponseDetails<CustomerResponseDto>> UpdateCustomerAsync(Guid id, UpdateCustomerDto customerDetails)
         {
             try
             {
                 var customer = await _context.Customers.FindAsync(id);
                 if (customer == null)
                 {
-                    return new ResponseDetails<CustomerResponseDTO>
+                    return new ResponseDetails<CustomerResponseDto>
                     {
                         IsSuccess = false,
                         Data = null,
@@ -176,7 +174,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
                 customer.PhoneNumber = customerDetails.PhoneNumber ?? customer.PhoneNumber;
 
                 await _context.SaveChangesAsync();
-                var customerResponseDTO = new CustomerResponseDTO
+                var customerResponseDTO = new CustomerResponseDto
                 {
                     FullName = customer.FullName,
                     City = customer.City,
@@ -184,7 +182,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
                     Address = customer.Address,
                 };
 
-                return new ResponseDetails<CustomerResponseDTO>
+                return new ResponseDetails<CustomerResponseDto>
                 {
                     IsSuccess = true,
                     Data = customerResponseDTO,
@@ -195,7 +193,7 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             {
                 _logger.LogError(ex, "Error occurred while updating customer with id: {id}", id);
 
-                return new ResponseDetails<CustomerResponseDTO>
+                return new ResponseDetails<CustomerResponseDto>
                 {
                     IsSuccess = false,
                     Message = "An error occurred while updating customer"

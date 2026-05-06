@@ -1,6 +1,6 @@
 ﻿namespace HotelManagementSystem.API.Domain.DTOs
 {
-    public class CustomerResponseDTO
+    public class CustomerResponseDto
     {
         public Guid Id { get; set; }
         public string FullName { get; set; }

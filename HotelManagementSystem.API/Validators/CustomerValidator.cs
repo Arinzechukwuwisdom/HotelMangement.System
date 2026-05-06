@@ -3,7 +3,7 @@ using HotelManagementSystem.API.Domain.DTOs;
 
 namespace HotelManagementSystem.API.Validators
 {
-    public class CustomerValidator:AbstractValidator<CreateCustomerDTO>
+    public class CustomerValidator:AbstractValidator<CreateCustomerDto>
     {
         public CustomerValidator()
         {

@@ -13,8 +13,8 @@ namespace HotelManagementSystem.API.Extensions
 
             services.AddDbContext<HotelContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddScoped<ICustomerRepository, CustomerRepository>(); // Dependency Injection for Customers.
-
+            services.AddScoped<ICustomer, CustomerRepository>(); // Dependency Injection for Customers.
+            services.AddScoped<IRoom, RoomRepository>();
         }
 
     }

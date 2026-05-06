@@ -10,13 +10,13 @@ namespace HotelManagementSystem.API.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        public readonly ICustomerRepository _customerRepository;
-        public CustomerController(ICustomerRepository customerRepository)
+        public readonly ICustomer _customerRepository;
+        public CustomerController(ICustomer customerRepository)
         {
             _customerRepository = customerRepository;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateCustomer(CreateCustomerDTO customerDetails)
+        public async Task<IActionResult> CreateCustomer(CreateCustomerDto customerDetails)
         {
             var customer= await _customerRepository.CreateCustomerAsync(customerDetails);
             return Ok(customer);

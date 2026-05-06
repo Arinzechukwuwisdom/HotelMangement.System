@@ -5,8 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelManagementSystem.API.Domain.Models
 {
-    public class Hotel : BaseEntity
+    public class Hotel 
     {
+        [Key]
+        public Guid Id { get; set; }
         [Column(TypeName = "Nvarchar(30)")]
         public required string City { get; set; }
         [Column(TypeName = "Nvarchar(30)")]

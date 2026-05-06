@@ -29,10 +29,10 @@ namespace HotelManagementSystem.API.Context
                       .HasForeignKey(e => e.HotelId)
                       .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasMany(h => h.Rooms)
-                      .WithOne(r => r.Hotel)
-                      .HasForeignKey(r => r.HotelId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                //entity.HasMany(h => h.Rooms)
+                //      .WithOne(r => r.Hotel)
+                //      .HasForeignKey(r => r.HotelId)
+                //      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Room>(entity=>
