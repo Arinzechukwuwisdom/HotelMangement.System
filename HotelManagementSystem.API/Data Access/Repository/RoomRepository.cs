@@ -209,9 +209,35 @@ namespace HotelManagementSystem.API.Data_Access.Repository
             }
         }
 
-        public Task<ResponseDetails<RoomResponseDto>> UpdateRoomAsync(Guid id, UpdateRoomDto dto)
+        public async Task<ResponseDetails<RoomResponseDto>> UpdateRoomAsync(Guid id, UpdateRoomDto dto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var room= await _context.FindAsync<Room>(id);
+                if (room == null)
+                {
+                    return new ResponseDetails<RoomResponseDto>
+                    {
+                        IsSuccess = false,
+                        Message = " Room Not Found",
+                        Data= null
+                    };
+                }
+                room.RoomType = dto.RoomType ?? room.RoomType;
+
+                room.RoomNo = (dto.RoomNo != null) 
+                    ? dto.RoomNo
+                    : room.RoomNo;
+
+                room.Price = (dto.Price != null)
+                    ? dto.Price
+                    : room.Price;
+
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

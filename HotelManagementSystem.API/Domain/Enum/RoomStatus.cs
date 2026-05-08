@@ -11,6 +11,11 @@
     }
     //public class RoomStatus
     //{
-    //   public string Status {  get; set; }
+    //    public string Available {  get; set; }
+    //    public string Unavailable { get; set; }
+    //    public string Reserved { get; set; }
+    //    public string Maintenance { get; set; }
+    //    public string Dirty { get; set; }
+    //    public string Occupied { get; set; }
     //}
 }

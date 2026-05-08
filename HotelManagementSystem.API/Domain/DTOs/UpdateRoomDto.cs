@@ -2,9 +2,9 @@
 {
     public class UpdateRoomDto
     {
-        public string RoomNumber { get; set; }
+        public int RoomNo { get; set; }
         public string RoomType { get; set; }
-        public decimal PricePerNight { get; set; }
-        public bool IsAvailable { get; set; }
+        public decimal Price { get; set; }
+        //public bool IsAvailable { get; set; }
     }
 }
