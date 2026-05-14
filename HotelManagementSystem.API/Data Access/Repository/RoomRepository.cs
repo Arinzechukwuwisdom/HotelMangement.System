@@ -213,14 +213,14 @@ namespace HotelManagementSystem.API.Data_Access.Repository
         {
             try
             {
-                var room= await _context.FindAsync<Room>(id);
+                var room = await _context.FindAsync<Room>(id);
                 if (room == null)
                 {
                     return new ResponseDetails<RoomResponseDto>
                     {
                         IsSuccess = false,
-                        Message = " Room Not Found",
-                        Data= null
+                        Message = "Room Not Found",
+                        Data = null
                     };
                 }
                 room.RoomType = dto.RoomType ?? room.RoomType;
@@ -233,10 +233,35 @@ namespace HotelManagementSystem.API.Data_Access.Repository
                     ? dto.Price
                     : room.Price;
 
+                room.RoomStatus = (dto.RoomStatus != null)
+                    ? dto.RoomStatus
+                    : room.RoomStatus;
+
+                await _context.SaveChangesAsync();
+                var roomResponseDTO = new RoomResponseDto
+                {
+                    RoomNo = room.RoomNo,
+                    RoomStatus = room.RoomStatus,
+                    RoomType = room.RoomType,
+                    Price = room.Price,
+                };
+
+                return new ResponseDetails<RoomResponseDto>
+                {
+                    IsSuccess = true,
+                    Data = roomResponseDTO,
+                    Message = "Room Updated Successfully"
+                };
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while updating customer with id: {id}", id);
 
+                return new ResponseDetails<RoomResponseDto>
+                {
+                    IsSuccess = false,
+                    Message = "An error occurred while updating customer"
+                };
             }
         }
     }

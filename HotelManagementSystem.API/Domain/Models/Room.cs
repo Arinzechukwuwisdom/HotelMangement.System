@@ -12,7 +12,8 @@ namespace HotelManagementSystem.API.Domain.Models
         public required RoomStatus RoomStatus { get; set; }
         //public Guid RoomTypeId { get; set; }
         public string RoomType { get; set; }
-        public bool IsAvailable => RoomStatus == RoomStatus.Available;
+        public bool IsAvailable { get; set; }
+        //public bool IsAvailable => RoomStatus == RoomStatus.Available;
         //public Guid HotelId { get; set; }
         //public Hotel Hotel { get; set; }
         public List<Booking> Bookings { get; set; } = new List<Booking>();

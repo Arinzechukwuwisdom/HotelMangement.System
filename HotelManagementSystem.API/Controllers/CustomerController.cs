@@ -15,11 +15,23 @@ namespace HotelManagementSystem.API.Controllers
         {
             _customerRepository = customerRepository;
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateCustomer(CreateCustomerDto customerDetails)
         {
-            var customer= await _customerRepository.CreateCustomerAsync(customerDetails);
-            return Ok(customer);
+            try
+            {
+                var req = await _customerRepository.CreateCustomerAsync(customerDetails);
+                if (!req.IsSuccess)
+                {
+                    return BadRequest(req);
+                }
+                return Ok(req);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
     }
