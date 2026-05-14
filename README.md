@@ -6,7 +6,7 @@ A scalable and secure Hotel Management System built with **ASP.NET Core Web API*
 This project demonstrates backend development concepts including:
 
 * RESTful API development
-* Clean architecture practices
+* Layered architecture practices
 * Entity Framework Core
 * Dependency Injection
 * JWT Authentication
